@@ -1,0 +1,6 @@
+id,firstName,email
+1,Alice,Johnson,alice.johnsonexample.com
+2,Bob,Smith,bob.johnsonexample.com
+3,Carol,White,carol.white@example.com,ExtraField
+4,Dave,Lee,dave.lee@example
+5,name,EmptyEmail,empty.email@example.com

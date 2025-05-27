@@ -1,0 +1,57 @@
+### Global ###
+# OS generated files #
+.DS_Store
+Thumbs.db
+
+# IDEs and editors #
+.idea/
+*.iml
+.vscode/
+
+# Logs and temp files #
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tmp
+*.swp
+
+# Environment files #
+.env
+.env.*
+
+### Backend (Kotlin + Spring Boot + Gradle) ###
+# Gradle #
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Kotlin/Java #
+*.class
+*.jar
+*.war
+*.ear
+
+# Uploaded files #
+uploads/
+
+### Frontend (React) ###
+# Node #
+node_modules/
+bower_components/
+
+# Build output #
+build/
+dist/
+
+# Testing #
+coverage/
+
+# Production #
+*.env.production.local
+*.env.development.local
+
+# Misc #
+*.lock
+.cache/

@@ -68,7 +68,7 @@ fun handleFileUpload(@RequestParam("file") file: MultipartFile): ResponseEntity<
                 lastName = parts[2],
                 email = parts[3]
             )
-            // Optional: further validation, like email format
+            // further validation, like email format
             if (!user.email.contains("@")) {
                 errors.add("Line ${index + 2}: Invalid email '${user.email}'")
             }

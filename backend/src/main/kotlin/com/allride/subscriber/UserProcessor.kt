@@ -36,24 +36,11 @@ class UserProcessor(fileEventChannel: Channel<FileUploadedEvent>) {
 
         for ((index, row) in records.withIndex()) {
             try {
-                if (row.size < 4) {
-                    errors.add("Line ${index + 2}: Expected 4 columns but found ${row.size}")
-                    continue
-                }
-
-                val id = row[0].trim()
-                val firstName = row[1].trim()
-                val lastName = row[2].trim()
-                val email = row[3].trim()
-
-                if (!email.contains("@")) {
-                    errors.add("Line ${index + 2}: Invalid email '$email'")
-                    continue
-                }
-
-                val user = User(id, firstName, lastName, email)
-                userStore.add(user)
-                println("👤 Stored user: $user")
+                
+                    val (id, firstName, lastName, email) = row.map { it.trim() }
+                    val user = User(id, firstName, lastName, email)
+                    userStore.add(user)
+                    println("Stored user: $user")
 
             } catch (e: Exception) {
                 errors.add("Line ${index + 2}: Exception processing row - ${e.message}")

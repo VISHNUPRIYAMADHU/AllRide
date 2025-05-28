@@ -23,7 +23,7 @@ class UploadController(private val fileEventChannel: Channel<FileUploadedEvent>)
     }
 
     @PostMapping("/upload")
-fun handleFileUpload(@RequestParam("file") file: MultipartFile): ResponseEntity<String> {
+    fun handleFileUpload(@RequestParam("file") file: MultipartFile): ResponseEntity<String> {
     if (file.isEmpty) {
         return ResponseEntity.badRequest().body("File is empty")
     }
@@ -35,9 +35,7 @@ fun handleFileUpload(@RequestParam("file") file: MultipartFile): ResponseEntity<
     val lines: List<String>
     try {
         lines = file.inputStream.bufferedReader().readLines()
-        if (lines.isEmpty()) {
-            return ResponseEntity.badRequest().body("CSV file is empty")
-        }
+        
     } catch (ex: Exception) {
         return ResponseEntity.badRequest().body("Failed to read file: ${ex.message}")
     }

@@ -18,7 +18,7 @@ class UserProcessor(fileEventChannel: Channel<FileUploadedEvent>) {
     init {
         CoroutineScope(Dispatchers.IO).launch {
             for (event in fileEventChannel) {
-                println("📨 Received event for file: ${event.filePath} at ${event.timestamp}")
+                println("Received event for file: ${event.filePath} at ${event.timestamp}")
 
                 processFile(event.filePath)
             }
@@ -26,13 +26,13 @@ class UserProcessor(fileEventChannel: Channel<FileUploadedEvent>) {
     }
 
    private fun processFile(path: String) {
-    println("🚀 Started processing: $path")
+    println("Started processing: $path")
     val errors = mutableListOf<String>()
     try {
         val reader = CSVReaderBuilder(FileReader(path)).withSkipLines(1).build()
         val records = reader.readAll()
 
-        println("✅ Read ${records.size} records from file: $path")
+        println(" Read ${records.size} records from file: $path")
 
         for ((index, row) in records.withIndex()) {
             try {
@@ -61,17 +61,17 @@ class UserProcessor(fileEventChannel: Channel<FileUploadedEvent>) {
         }
 
         if (errors.isNotEmpty()) {
-            println("⚠️ Found ${errors.size} errors processing file:")
+            println(" Found ${errors.size} errors processing file:")
             errors.forEach { println(it) }
         }
 
         // Print entire userStore after processing
-        println("📦 Current user store:")
+        println(" Current user store:")
         userStore.forEach { println(it) }
 
-        println("🎉 Finished processing: $path")
+        println(" Finished processing: $path")
     } catch (e: Exception) {
-        println("💥 Failed to read file: $path -- ${e.message}")
+        println(" Failed to read file: $path -- ${e.message}")
     }
 }
 

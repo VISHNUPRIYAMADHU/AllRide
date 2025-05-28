@@ -67,7 +67,6 @@ AllRide/
 5. Parsed users are stored in memory (`MutableList<User>`).
 
 ### Architecture Diagram
-
                       ┌────────────────────┐
                       │  React Frontend    │
                       │  (CSV Upload UI)   │
@@ -95,7 +94,7 @@ Validate file type       Validate CSV headers      Validate CSV row count
               Publish FileUploadedEvent via Channel
                      (includes file path & timestamp)
 
-                               ▼
+                              
                   ┌───────────▼────────────┐
                   │    UserProcessor       │
                   │ (Coroutine Subscriber) │
@@ -106,23 +105,18 @@ Validate file type       Validate CSV headers      Validate CSV row count
                   ┌───────────▼────────────┐
                   │   Read & parse CSV     │
                   │   → OpenCSV            │
-                  │
                   └───────────┬────────────┘
                               │
                 ┌─────────────▼──────────────┐
-                │ Validate rows & emails     │
-                │ → Expected 4 fields        │
-                │ → Must contain @ in email  │
+                │ Store valid users in memory │
+                │ (List<User> userStore)      │
                 └─────────────┬──────────────┘
-                              ▼
-                    Store valid users in memory
-                       (List<User> userStore)
-
                               ▼
               ┌───────────────▼────────────────┐
               │ Print errors & userStore log   │
               │ → Error details with line nums │
               └────────────────────────────────┘
+
 
 
 ### Frontend Overview

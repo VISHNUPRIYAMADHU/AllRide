@@ -68,19 +68,62 @@ AllRide/
 
 ### Architecture Diagram
 
-React Frontend
-    │
-    ├── POST /api/upload (Multipart CSV)
-    │
-Backend: Spring Boot (Kotlin)
-    │
-    ├── Save file → uploads/
-    ├── Publish FileUploadedEvent via Channel
-    │
-UserProcessor
-    ├── Listen to Channel
-    ├── Parse CSV rows
-    ├── Store Users in memory
+                      ┌────────────────────┐
+                      │  React Frontend    │
+                      │  (CSV Upload UI)   │
+                      └────────┬───────────┘
+                               │
+            POST /api/upload (Multipart CSV)
+                               │
+                      ┌────────▼───────────┐
+                      │ Spring Boot Backend│
+                      │  (Kotlin REST API) │
+                      └────────┬───────────┘
+                               │
+        ┌──────────────────────┼─────────────────────────────┐
+        │                      │                             │
+        ▼                      ▼                             ▼
+Validate file type       Validate CSV headers      Validate CSV row count
+(.csv only)              → Must have 4 headers     → All rows must have 4 fields
+                         → Use User model fields
+
+        └──────────────────────┬─────────────────────────────┘
+                               ▼
+                     Save file to /uploads/
+
+                               ▼
+              Publish FileUploadedEvent via Channel
+                     (includes file path & timestamp)
+
+                               ▼
+                  ┌───────────▼────────────┐
+                  │    UserProcessor       │
+                  │ (Coroutine Subscriber) │
+                  └───────────┬────────────┘
+                              │
+                  Listen to FileUploadedEvent
+                              │
+                  ┌───────────▼────────────┐
+                  │   Read & parse CSV     │
+                  │   → OpenCSV            │
+                  │
+                  └───────────┬────────────┘
+                              │
+                ┌─────────────▼──────────────┐
+                │ Validate rows & emails     │
+                │ → Expected 4 fields        │
+                │ → Must contain @ in email  │
+                └─────────────┬──────────────┘
+                              ▼
+                    Store valid users in memory
+                       (List<User> userStore)
+
+                              ▼
+              ┌───────────────▼────────────────┐
+              │ Print errors & userStore log   │
+              │ → Error details with line nums │
+              └────────────────────────────────┘
+
 
 ### Frontend Overview
 
@@ -100,7 +143,6 @@ id,firstName,lastName,email
 ### 🚀 Running the Project
  🔹 Clone the Repository
   https://github.com/VISHNUPRIYAMADHU/AllRide.git
-  git checkout dev
 
   🔹 Start Backend
      cd backend
